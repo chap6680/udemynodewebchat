@@ -18,17 +18,22 @@ app.use(express.static(publicpath));
 io.on('connection', (socket) => { 
 	console.log('New user connected');
 	
-/* 	socket.emit('newMessage', {
+  	socket.emit('newMessage', {
 		from: 'd.com',
 		text: 'first text message',
 		createAt:123
 	});
- */
-/* 	socket.emit('Welcome', {
+ 
+ 	socket.emit('welcomeMessage', {
 		from: 'Admin',
 		text: 'Welcome to our ChapApp'
 	});
- */
+
+	socket.broadcast.emit('welcomeMessage', {
+		from: 'Admin',
+		text: 'somones here'
+	});
+	
 	//listening for createMessage from client
 	socket.on('createMessage', (message) => {
 		console.log('messages: ', message);
