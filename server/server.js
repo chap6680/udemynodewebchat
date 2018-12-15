@@ -16,46 +16,42 @@ var io = socketIO(server);
 app.use(express.static(publicpath));
 
 io.on('connection', (socket) => { 
+	//puts log entry on the server console
 	console.log('New user connected');
 	
+	//sends info on connection
   	socket.emit('newMessage', {
 		from: 'd.com',
 		text: 'first text message',
 		createAt:123
 	});
  
+	//sends info on connection
  	socket.emit('welcomeMessage', {
 		from: 'Admin',
 		text: 'Welcome to our ChapApp'
 	});
 
+	//sends info on connection - to all but the user just connected
 	socket.broadcast.emit('welcomeMessage', {
 		from: 'Admin',
 		text: 'somones here'
 	});
 	
-	//listening for createMessage from client
+	//listening for createMessage from client 
 	socket.on('createMessage', (message) => {
 		console.log('messages: ', message);
 		
-		//io.emit and io.broadcast.emit
-		//when newMessage is called - everyone gets this message
-		 		
-			io.emit('newMessage', {
-				from: message.from,
-				text: message.text,
-				createdAt: new Date().getTime()
-			});
-		 
-
-		//adding broadcast sends message to everyone except for the sender
-		/* 		io.broadcast.emit('newMessage', {
+		//returns info 
+		io.emit('returnCreatedMessage', {
 			from: message.from,
 			text: message.text,
 			createdAt: new Date().getTime()
-		}); */
+		});
+		 
 	});
 
+	//puts log entry on the server console
 	socket.on('disconnect', () => {
 		console.log('User was disconnected');
 	});
