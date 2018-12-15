@@ -17,27 +17,21 @@ app.use(express.static(publicpath));
 
 io.on('connection', (socket) => { 
 	console.log('New user connected');
-
-	socket.emit('newEmail', {
-		from: 'd3@gmail.com',
-		text: 'tasdfsald',
-		createAt:123
-	});
 	
-	socket.emit('newMessage', {
+/* 	socket.emit('newMessage', {
 		from: 'd.com',
 		text: 'first text message',
 		createAt:123
 	});
-
-	//listening for createEmail from client
-	socket.on('createEmail', (newEmail) => {
-		console.log('createEmail', newEmail);
-	});
-
+ */
 	//listening for createMessage from client
-	socket.on('createMessage', (createMessage) => {
-		console.log('messages: ', createMessage);
+	socket.on('createMessage', (message) => {
+		console.log('messages: ', message);
+		io.emit('newMessage', {
+			from: message.from,
+			text: message.text,
+			createdAt: new Date().getTime()
+		});
 	});
 
 	socket.on('disconnect', () => {
