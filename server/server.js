@@ -24,14 +24,31 @@ io.on('connection', (socket) => {
 		createAt:123
 	});
  */
+/* 	socket.emit('Welcome', {
+		from: 'Admin',
+		text: 'Welcome to our ChapApp'
+	});
+ */
 	//listening for createMessage from client
 	socket.on('createMessage', (message) => {
 		console.log('messages: ', message);
-		io.emit('newMessage', {
+		
+		//io.emit and io.broadcast.emit
+		//when newMessage is called - everyone gets this message
+		 		
+			io.emit('newMessage', {
+				from: message.from,
+				text: message.text,
+				createdAt: new Date().getTime()
+			});
+		 
+
+		//adding broadcast sends message to everyone except for the sender
+		/* 		io.broadcast.emit('newMessage', {
 			from: message.from,
 			text: message.text,
 			createdAt: new Date().getTime()
-		});
+		}); */
 	});
 
 	socket.on('disconnect', () => {
